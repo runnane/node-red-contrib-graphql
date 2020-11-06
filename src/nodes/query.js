@@ -22,39 +22,27 @@ module.exports = function (RED) {
           if (err) {
             node.error(err.message, msg);
             status.error(node, err.message);
+            msg.error = err;
           } else {
-            status.clear(node);
+            status.clear(node);          
+            msg.payload = result;
           }
-          msg.payload = result;
           return node.send(msg);
         };
 
-        // node.graphqlConfig.login(msg, async function (err, conn) {
-        //   if (err) {
-        //     return node.sendMsg(err);
-        //   }
+        let query = msg.query || config.query;
+        let payload = msg.payload;
 
-          let query = msg.query || config.query;
-          let payload = msg.payload;
-
-          try {
-            let result = await node.graphqlConfig.query(query, payload);
-            node.sendMsg(null, result.data);
-          } catch (err) {
-            node.sendMsg(err);
-          }
-
-        // })
+        try {
+          let result = await node.graphqlConfig.query(query, payload);
+          node.sendMsg(null, result.data);
+        } catch (err) {
+          node.sendMsg(err);
+        }
 
       })
       
     }
-
-    // } else {
-    //   var err = new Error('missing graphql configuration');
-    //   node.error(err.message, msg);
-    //   status.error(node, err.message);
-    // }
 
   }
 
