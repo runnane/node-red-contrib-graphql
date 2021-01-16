@@ -1,33 +1,41 @@
 <script type="text/javascript">
     RED.nodes.registerType('graphql-config', {
         category: 'config',
+        color: 'rgb(218, 196, 180)',
         defaults: {
-            name: { value: '' },
-            baseUrl: { value: "http://localhost:8080/v1/graphql", required: true },
-            baseUrlWs: { value: "ws://localhost:8080/v1/graphql", required: false },
-            adminSecret: { value: "" }
+            name: { value: '', required: false },
+            endpoint: {
+                value: 'http://localhost:8080/v1/graphql',
+                required: true,
+            },
+            authorizationHeader: {
+                value: 'X-Hasura-Admin-Secret',
+                required: false,
+            },
+            authorizationToken: { value: '', required: false },
         },
+        align: 'left',
         label: function () {
-            return this.name || this.baseUrl || "graphql"
-        }
+            return this.name || this.endpoint || 'GraphQL';
+        },
     });
 </script>
 
 <script type="text/x-red" data-template-name="graphql-config">
-  <div class="form-row">
-      <label for="node-config-input-name"><i class="icon-tag"></i> Name</label>
-      <input type="text" id="node-config-input-name" placeholder="Name">
-  </div>
-  <div class="form-row">
-    <label for="node-config-input-baseUrl"><i class="fa fa-server"></i> Base Url</label>
-    <input type="text" id="node-config-input-baseUrl">
-  </div>
-  <div class="form-row">
-      <label for="node-config-input-baseUrlWs"><i class="fa fa-server"></i> Base Url Ws</label>
-      <input type="text" id="node-config-input-baseUrlWs">
-  </div>
-  <div class="form-row">
-      <label for="node-config-input-adminSecret"><i class="fa fa-user"></i> Admin Secret</label>
-      <input type="text" id="node-config-input-adminSecret">
-  </div>
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name </label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-endpoint"><i class="fa fa-bookmark"></i> Endpoint </label>
+        <input type="text" id="node-config-input-endpoint">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-authorizationHeader"><i class="fa fa-bookmark"></i> Header </span></label>
+        <input type="text" id="node-config-input-authorizationHeader">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-authorizationToken"><i class="fa fa-bookmark"></i> Authorization </label>
+        <input type="password" id="node-config-input-authorizationToken">
+    </div>
 </script>
