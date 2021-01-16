@@ -1,40 +1,38 @@
-const _ = require('lodash');
-
-const logger = require('../util/logger');
 const status = require('../util/nodeStatus');
 
 module.exports = function (RED) {
+    function GraphQLSubscribeNode(config) {
+        RED.nodes.createNode(this, config);
+        var node = this;
 
-  function GraphQLSubscribeNode(config) {
-    RED.nodes.createNode(this, config);
-    var node = this;
+        node.graphql = config.graphql;
+        node.graphqlConfig = RED.nodes.getNode(node.graphql);
+        if (!node.graphqlConfig) return;
 
-    node.graphql = config.graphql;
-    node.graphqlConfig = RED.nodes.getNode(node.graphql);
-
-    if (node.graphqlConfig) {
-
-      let subscription = config.subscription;
-      let payload = {};
-
-      try {
-        status.info(node, "subscribed");
-        node.graphqlConfig.subscribe(subscription, payload).subscribe(result => {
-          return node.send({
-            payload: result.data,
-          });
-        }, (err) => {
-          console.log(err);
-          status.error(node, err.message);
-        });
-      } catch (err) {
-        console.log(err);
-        status.error(node, err.message);
-      }
-
+        let subscription = config.template;
+        let payload = {};
+        try {
+            status.info(node, 'subscribed');
+            node.graphqlConfig.subscribe(subscription, payload).subscribe(
+                (result) => {
+                    status.info(node, 'subscribed');
+                    return node.send([
+                        {
+                            payload: result.data,
+                        },
+                        null,
+                    ]);
+                },
+                (err) => {
+                    status.error(node, err.message);
+                    return node.send([null, { payload: err }]);
+                }
+            );
+        } catch (err) {
+            node.error(err.message, {});
+            status.error(node, err.message);
+        }
     }
 
-  }
-
-  RED.nodes.registerType('graphql-subscribe', GraphQLSubscribeNode);
-}
+    RED.nodes.registerType('graphql-subscribe', GraphQLSubscribeNode);
+};

@@ -1,50 +1,29 @@
-const _ = require('lodash');
-
-const logger = require('../util/logger');
+const send = require('../util/send');
 const status = require('../util/nodeStatus');
 
 module.exports = function (RED) {
+    function GraphQLQueryNode(config) {
+        RED.nodes.createNode(this, config);
+        const node = this;
 
-  function GraphQLQueryNode(config) {
-    RED.nodes.createNode(this, config);
-    var node = this;
+        node.graphql = config.graphql;
+        node.graphqlConfig = RED.nodes.getNode(node.graphql);
+        if (!node.graphqlConfig) return;
 
-    node.graphql = config.graphql;
-    node.graphqlConfig = RED.nodes.getNode(node.graphql);
+        node.on('input', async function (msg) {
+            status.info(node, 'processing');
 
-    if (node.graphqlConfig) {
+            let query = config.template || msg.query;
+            let payload = msg.payload;
 
-      node.on('input', async function (msg) {
-
-        status.info(node, "processing");
-
-        node.sendMsg = function (err, result) {
-          if (err) {
-            node.error(err.message, msg);
-            status.error(node, err.message);
-            msg.error = err;
-          } else {
-            status.clear(node);          
-            msg.payload = result;
-          }
-          return node.send(msg);
-        };
-
-        let query = msg.query || config.query;
-        let payload = msg.payload;
-
-        try {
-          let result = await node.graphqlConfig.query(query, payload);
-          node.sendMsg(null, result.data);
-        } catch (err) {
-          node.sendMsg(err);
-        }
-
-      })
-      
+            try {
+                let result = await node.graphqlConfig.query(query, payload);
+                send(node, msg, null, result.data);
+            } catch (err) {
+                send(node, msg, err);
+            }
+        });
     }
 
-  }
-
-  RED.nodes.registerType('graphql-query', GraphQLQueryNode);
-}
+    RED.nodes.registerType('graphql-query', GraphQLQueryNode);
+};
