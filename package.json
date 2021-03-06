@@ -1,6 +1,6 @@
 {
     "name": "@hbouvier/node-red-contrib-graphql",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "graphql for Node-RED ",
     "main": "index.js",
     "scripts": {
@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/alpine-code/node-red-contrib-graphql.git"
+        "url": "git+https://github.com/hbouvier/node-red-contrib-graphql.git"
     },
     "publishConfig": {
         "access": "public"
@@ -18,9 +18,9 @@
     "author": "ilzenzo",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/alpine-code/node-red-contrib-graphql/issues"
+        "url": "https://github.com/hbouvier/node-red-contrib-graphql/issues"
     },
-    "homepage": "https://github.com/alpine-code/node-red-contrib-graphql#readme",
+    "homepage": "https://github.com/hbouvier/node-red-contrib-graphql#readme",
     "keywords": [
         "node-red",
         "graphql",

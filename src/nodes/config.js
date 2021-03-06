@@ -52,8 +52,8 @@ module.exports = function (RED) {
             ssrMode: false,
             link,
             cache: new InMemoryCache(),
-            name: '@alpine-code/node-red-contrib-graphql',
-            version: '1.0.0',
+            name: '@hbouvier/node-red-contrib-graphql',
+            version: '1.0.2',
             queryDeduplication: false,
             defaultOptions: {
               query: {
