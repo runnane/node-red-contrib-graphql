@@ -25,12 +25,14 @@ module.exports = function (RED) {
                 },
                 (err) => {
                     status.error(node, err.message);
+                    throw "Error on subscription";
                     return node.send([null, { payload: err }]);
                 }
             );
         } catch (err) {
             node.error(err.message, {});
             status.error(node, err.message);
+            throw err;
         }
     }
 
