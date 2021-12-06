@@ -1,6 +1,6 @@
 {
     "name": "@runnane/node-red-contrib-graphql",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "graphql for Node-RED ",
     "main": "index.js",
     "scripts": {
