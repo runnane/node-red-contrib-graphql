@@ -24,6 +24,10 @@ module.exports = function (RED) {
         if (config.authorizationHeader && config.authorizationToken) {
             headers[config.authorizationHeader] = config.authorizationToken;
         }
+        let token;
+        if(config.token){
+            token = config.token;
+        }
 
         const link = ApolloLink.split(
             hasSubscriptionOperation,
@@ -36,7 +40,7 @@ module.exports = function (RED) {
                         timeout: 30000,
                         connectionParams: {
                             headers,
-                            token: config.token,
+                            token: token,
                         },
                     },
                     ws
