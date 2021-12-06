@@ -36,6 +36,7 @@ module.exports = function (RED) {
                         timeout: 30000,
                         connectionParams: {
                             headers,
+                            token: config.token,
                         },
                     },
                     ws
